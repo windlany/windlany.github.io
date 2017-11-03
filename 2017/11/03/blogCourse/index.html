@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/11/03/blogCourse/index.html">
 <meta property="og:site_name" content="兰大喵喵喵的博客~">
 <meta property="og:description" content="文章导航  前期准备 安装hexo 修改hexo主题 自定义主题 部署本地文件到github查看  我的第一篇博客   前期准备  下载安装git命令行工具、node及npm环境 注册自己的GitHub账号   安装hexo在任意位置右键–&amp;gt;git bash(以下命令都在gitBash中执行)  输入如下命令1npm install -g hexo 自定义文件夹（比如E:\hexo），在文件">
-<meta property="og:updated_time" content="2017-11-03T07:04:17.579Z">
+<meta property="og:updated_time" content="2017-11-03T07:13:33.897Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于gitHub+hexo搭建的个人博客">
 <meta name="twitter:description" content="文章导航  前期准备 安装hexo 修改hexo主题 自定义主题 部署本地文件到github查看  我的第一篇博客   前期准备  下载安装git命令行工具、node及npm环境 注册自己的GitHub账号   安装hexo在任意位置右键–&amp;gt;git bash(以下命令都在gitBash中执行)  输入如下命令1npm install -g hexo 自定义文件夹（比如E:\hexo），在文件">
@@ -200,12 +200,12 @@
 <h3 id="保存设置"><a href="#保存设置" class="headerlink" title="保存设置"></a>保存设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo g</div><div class="line">hexo d</div></pre></td></tr></table></figure>
 <h3 id="打开本地查看"><a href="#打开本地查看" class="headerlink" title="打开本地查看"></a>打开本地查看</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo g</div><div class="line">hexo s</div></pre></td></tr></table></figure>
 <h2 id="部署本地文件到github查看"><a href="#部署本地文件到github查看" class="headerlink" title="部署本地文件到github查看"></a>部署本地文件到github查看</h2><p>进入github页面点击右上方+按钮创建项目 New repository</p>
-<h3 id="创建名称"><a href="#创建名称" class="headerlink" title="创建名称"></a>创建名称</h3><p>在Repository name中填入你想要的名称</p>
+<h3 id="创建名称"><a href="#创建名称" class="headerlink" title="创建名称"></a>创建名称</h3><p>在Repository name中填入你想要的名称（建议youname与github名称相同）</p>
 <blockquote>
 <p>Repository name = youname + .github.io<br>这以后会是你博客的域名<br>以后访问<a href="https://youname.github.io就可以访问你的博客" target="_blank" rel="external">https://youname.github.io就可以访问你的博客</a></p>
 <p>注意：创建项目名称一定要是名字加后缀形式：youname.github.io（我在这就被坑过…）</p>
 </blockquote>
-<h3 id="本地部署"><a href="#本地部署" class="headerlink" title="本地部署"></a>本地部署</h3><p>部署Github前需要配置_config.yml文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">    type: git</div><div class="line">    repository: git@github.com:youID/youname.github.io.git</div><div class="line">    branch: master</div></pre></td></tr></table></figure></p>
+<h3 id="本地部署"><a href="#本地部署" class="headerlink" title="本地部署"></a>本地部署</h3><p>部署Github前需要配置_config.yml文件（在部署之前确保git仓库与本地通过ssh连通）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">    type: git</div><div class="line">    repository: git@github.com:youID/youname.github.io.git</div><div class="line">    branch: master</div></pre></td></tr></table></figure></p>
 <p>注意：属性的冒号和值之间一定要有一个空格（type:空格github）<br>    链接中的youID是你github的名称，youname.github.io是你创建的项目名称</p>
 <h2 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo g</div><div class="line">hexo d</div></pre></td></tr></table></figure>
 <blockquote>
