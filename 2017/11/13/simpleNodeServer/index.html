@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2017/11 | 兰大喵喵喵的博客~</title>
+  <title>Node之简单的前后端交互 | 兰大喵喵喵的博客~</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="兰大喵喵喵的博客~">
-<meta property="og:url" content="http://yoursite.com/archives/2017/11/index.html">
+  <meta name="description" content="node是前端必学的一门技能，我们都知道node是用的js做后端，在学习node之前我们有必要明白node是如何实现前后端交互的。 这里写了一个简单的通过原生ajax与node实现的一个交互，刚刚学node的朋友可以看一看。一方面理解服务端与客户端是如何交互的，一方面更熟悉node开发。">
+<meta name="keywords" content="Node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node之简单的前后端交互">
+<meta property="og:url" content="http://yoursite.com/2017/11/13/simpleNodeServer/index.html">
 <meta property="og:site_name" content="兰大喵喵喵的博客~">
+<meta property="og:description" content="node是前端必学的一门技能，我们都知道node是用的js做后端，在学习node之前我们有必要明白node是如何实现前后端交互的。 这里写了一个简单的通过原生ajax与node实现的一个交互，刚刚学node的朋友可以看一看。一方面理解服务端与客户端是如何交互的，一方面更熟悉node开发。">
+<meta property="og:updated_time" content="2017-11-13T07:02:53.237Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="兰大喵喵喵的博客~">
+<meta name="twitter:title" content="Node之简单的前后端交互">
+<meta name="twitter:description" content="node是前端必学的一门技能，我们都知道node是用的js做后端，在学习node之前我们有必要明白node是如何实现前后端交互的。 这里写了一个简单的通过原生ajax与node实现的一个交互，刚刚学node的朋友可以看一看。一方面理解服务端与客户端是如何交互的，一方面更熟悉node开发。">
   
     <link rel="alternative" href="/atom.xml" title="兰大喵喵喵的博客~" type="application/atom+xml">
   
@@ -143,36 +148,77 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-simpleNodeServer" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/11/13/simpleNodeServer/" class="archive-article-date">
-  	<time datetime="2017-11-13T06:42:28.996Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-13</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/13/simpleNodeServer/">Node之简单的前后端交互</a>
+    <h1 class="article-title" itemprop="name">
+      Node之简单的前后端交互
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2017/11/13/simpleNodeServer/" class="archive-article-date">
+  	<time datetime="2017-11-13T06:42:28.996Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>node是前端必学的一门技能，我们都知道node是用的js做后端，在学习node之前我们有必要明白node是如何实现前后端交互的。</p>
+<p>这里写了一个简单的通过原生ajax与node实现的一个交互，刚刚学node的朋友可以看一看。一方面理解服务端与客户端是如何交互的，一方面更熟悉node开发。<br><a id="more"></a></p>
+<p>先贴代码：（有兴趣的可以copy到本地自己run一下） </p>
+<h3 id="index-html"><a href="#index-html" class="headerlink" title="index.html:"></a>index.html:</h3><p><strong>主页面</strong>的html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!doctype&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"btn1"</span>&gt;</span>food<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"btn2"</span>&gt;</span>other<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">h1</span> <span class="attr">id</span>=<span class="string">"content"</span>&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"./client.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="server-js"><a href="#server-js" class="headerlink" title="server.js:"></a>server.js:</h3><p>接下来是<strong>服务器端</strong>的代码，运行方式是在node环境下输入命令：node server.js<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>); </div><div class="line"><span class="keyword">let</span> qs = <span class="built_in">require</span>(<span class="string">'querystring'</span>);  <span class="comment">// 用于解析JSON</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> server = http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</div><div class="line">    <span class="keyword">let</span> body = <span class="string">''</span>;  <span class="comment">// 一定要初始化为"" 不然是undefined</span></div><div class="line">    req.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">        body += data; <span class="comment">// 所接受的Json数据</span></div><div class="line">    &#125;);</div><div class="line">    req.on(<span class="string">'end'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; </div><div class="line">        res.writeHead(<span class="number">200</span>, &#123;  <span class="comment">// 响应状态</span></div><div class="line">            <span class="string">"Content-Type"</span>: <span class="string">"text/plain"</span>,  <span class="comment">// 响应数据类型</span></div><div class="line">            <span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'*'</span>  <span class="comment">// 允许任何一个域名访问</span></div><div class="line">        &#125;);</div><div class="line">        <span class="keyword">if</span>(qs.parse(body).name == <span class="string">'food'</span>) &#123;</div><div class="line">            res.write(<span class="string">'apple'</span>);  <span class="comment">// 响应数据</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            res.write(<span class="string">'other'</span>);</div><div class="line">        &#125; </div><div class="line">        res.end();</div><div class="line">    &#125;);   </div><div class="line">&#125;);</div><div class="line"></div><div class="line">server.listen(<span class="number">3000</span>);</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>引入的qs模块用于解析JSON<br>req.on(‘data’, callback);  // 监听客户端的数据，一旦有数据发送过来就执行回调函数<br>req.on(‘end’, callback); // 数据接收完毕<br>res  // 响应</p>
+</blockquote>
+<h3 id="client-js"><a href="#client-js" class="headerlink" title="client.js:"></a>client.js:</h3><p><strong>客户端</strong>的js（功能就是负责一些DOM操作以及发送ajax请求）<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> btn1 = <span class="built_in">document</span>.getElementById(<span class="string">'btn1'</span>);</div><div class="line"><span class="keyword">let</span> btn2 = <span class="built_in">document</span>.getElementById(<span class="string">'btn2'</span>);</div><div class="line"><span class="keyword">let</span> content = <span class="built_in">document</span>.getElementById(<span class="string">'content'</span>);</div><div class="line"></div><div class="line">btn1.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    ajax(<span class="string">'POST'</span>, <span class="string">"http://127.0.0.1:3000/"</span>, <span class="string">'name='</span>+<span class="keyword">this</span>.innerHTML);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">btn2.addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    ajax(<span class="string">'POST'</span>, <span class="string">"http://127.0.0.1:3000/"</span>, <span class="string">'name='</span>+<span class="keyword">this</span>.innerHTML);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 封装的ajax方法</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajax</span>(<span class="params">method, url, val</span>) </span>&#123;  <span class="comment">// 方法，路径，传送数据</span></div><div class="line">    <span class="keyword">let</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">    xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span>(xhr.readyState == <span class="number">4</span>) &#123;</div><div class="line">            <span class="keyword">if</span>(xhr.status &gt;= <span class="number">200</span> &amp;&amp; xhr.status &lt; <span class="number">300</span> || xhr.status == <span class="number">304</span>) &#123;</div><div class="line">                content.innerHTML = xhr.responseText;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                alert(<span class="string">'Request was unsuccessful: '</span> + xhr.status);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    xhr.open(method, url, <span class="literal">true</span>);   </div><div class="line">    <span class="keyword">if</span>(val)</div><div class="line">        xhr.setRequestHeader(<span class="string">'Content-Type'</span>, <span class="string">'application/x-www-form-urlencoded'</span>); </div><div class="line">    xhr.send(val);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个简单的交互就是这样的，其实我们在第一次学习后端语言的时候第一件事就是写一个前后端交互程序，这样会帮助我们更好的理解前后端的分工。</p>
+<p>run方法：<br>　　先将server.js运行起来，然后打开html来请求响应。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="//wxt.sinaimg.cn/thumb300/006foxf4gy1fl6370b3qtj30jz0mu76f.jpg?tags=%5B%5D">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="//wxt.sinaimg.cn/thumb300/006foxf4gy1fl6370l4f7j30er0emmyp.jpg?tags=%5B%5D">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -184,95 +230,154 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2017/11/13/simpleNodeServer/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/11/03/global_variable/" class="archive-article-date">
-  	<time datetime="2017-11-03T12:05:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-03</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/03/global_variable/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Javascript之全局变量和局部变量部分讲解</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/03/global_variable/">Javascript之全局变量和局部变量部分讲解</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#index-html"><span class="toc-number">1.</span> <span class="toc-text">index.html:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#server-js"><span class="toc-number">2.</span> <span class="toc-text">server.js:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#client-js"><span class="toc-number">3.</span> <span class="toc-text">client.js:</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
+  
+  
+
+  
+
+  
+    <section id="comments">
+      <!-- <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = ''; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript> -->
+    
+    <!--高速版，加载速度快，使用前需测试页面的兼容性-->
+<div id="SOHUCS" sid="Node之简单的前后端交互"></div>
+<script>
+  (function(){
+    var appid = 'cytiy9ShU',
+    conf = 'bf5d16b3038e1a8d49a236da8a2700b5';
+    var doc = document,
+    s = doc.createElement('script'),
+    h = doc.getElementsByTagName('head')[0] || doc.head || doc.documentElement;
+    s.type = 'text/javascript';
+    s.charset = 'utf-8';
+    s.src =  'http://assets.changyan.sohu.com/upload/changyan.js?conf='+ conf +'&appid=' + appid;
+    h.insertBefore(s,h.firstChild);
+    window.SCS_NO_IFRAME = true;
+  })()
+</script>
     
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/11/03/blogCourse/" class="archive-article-date">
-  	<time datetime="2017-11-03T06:12:27.164Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/11/03/blogCourse/">基于gitHub+hexo搭建的个人博客</a>
-    </h1>
+    </section>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -295,8 +400,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
